@@ -16,7 +16,8 @@ volatile KBD kbd; // KBD data structure
 void uart_init()
 {
     kprintf("uart_init()\n");
-    for(u32 i=0; i<MAX_UART_NUMBER; i++)
+    u32 i;
+    for(i=0; i<MAX_UART_NUMBER; i++)
     {
         UART *up = &uart[i];
         if(i != 3)

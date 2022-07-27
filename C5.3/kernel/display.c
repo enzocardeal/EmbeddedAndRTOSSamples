@@ -72,13 +72,14 @@ void scrollup() // scroll UP one row (the hard way)
     u32 end = (gDisplayContext.max_row - 1) * row_block_size;
 
     //move all rows one row up.
-    for(u32 i=0; i<end; i++)
+    u32 i;
+    for(i=0; i<end; i++)
     {
         fb[i]=fb[i + gDisplayContext.screen_width * font_block_height];
     }
 
     //clear the last row
-    for(u32 i=end; i < end + row_block_size; i++)
+    for(i=end; i < end + row_block_size; i++)
     {
         fb[i]=0x00000000;
     }    
@@ -111,10 +112,11 @@ void erasechar(u32 row, u32 col) // erase any char at screen char location (row,
     u32 x, y;
     x = (col-1) * (gDisplayContext.font_display_width + gDisplayContext.h_font_space);
     y = (row-1) * (gDisplayContext.font_display_height + gDisplayContext.v_font_space);
-
-    for(u32 i=0; i<gDisplayContext.font_display_height; i++) // 16
+    u32 i;
+    for(i=0; i<gDisplayContext.font_display_height; i++) // 16
     {
-        for(u32 j=0;j<gDisplayContext.font_display_width; j++) // 10
+        u32 j;
+        for(j=0;j<gDisplayContext.font_display_width; j++) // 10
         {
             u32 xx = x + j;
             u32 yy = y + i;

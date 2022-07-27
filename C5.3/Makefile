@@ -32,18 +32,13 @@ GCC_FLAGS = -mcpu=arm926ej-s -marm -g -c -nodefaultlibs -nostdlib -nostartfiles 
 LD_FLAGS = -T $(WORKSPACE)/myos.ld -nostdlib
 OBJCOPY_FLAGS = -O binary
 
-OBJ_BMP = \
-	$(BUILD_DIR)/image.o
-$(OBJ_BMP) : $(RESOURCE_DIR)/images/image.bmp
-	$(OBJCOPY) -I binary -O elf32-littlearm -B arm $(RESOURCE_DIR)/images/image.bmp $(BUILD_DIR)/image.o
+OBJ_TIMER = $(BUILD_DIR)/timer.o
+$(OBJ_TIMER) : $(DEVICE_DIR)/timer/sp804.c $(DEVICE_DIR)/timer/sp804.h
+	$(GCC) $(GCC_FLAGS) $(DEVICE_DIR)/timer/sp804.c -o $(OBJ_TIMER)
 
 OBJ_UART = $(BUILD_DIR)/uart.o
 $(OBJ_UART) : $(DEVICE_DIR)/uart/pl011.c $(DEVICE_DIR)/uart/pl011.h
 	$(GCC) $(GCC_FLAGS) $(DEVICE_DIR)/uart/pl011.c -o $(OBJ_UART)
-
-OBJ_TIMER = $(BUILD_DIR)/timer.o
-$(OBJ_TIMER) : $(DEVICE_DIR)/timer/sp804.c $(DEVICE_DIR)/timer/sp804.h
-	$(GCC) $(GCC_FLAGS) $(DEVICE_DIR)/timer/sp804.c -o $(OBJ_TIMER)
 
 OBJ_KBD = $(BUILD_DIR)/kbd.o
 $(OBJ_KBD) : $(DEVICE_DIR)/kbd/pl050.c $(DEVICE_DIR)/kbd/pl050.h
@@ -52,6 +47,12 @@ $(OBJ_KBD) : $(DEVICE_DIR)/kbd/pl050.c $(DEVICE_DIR)/kbd/pl050.h
 OBJ_LCD = $(BUILD_DIR)/lcd.o
 $(OBJ_LCD) : $(DEVICE_DIR)/lcd/pl110.c $(DEVICE_DIR)/lcd/pl110.h
 	$(GCC) $(GCC_FLAGS) $(DEVICE_DIR)/lcd/pl110.c -o $(OBJ_LCD)
+
+OBJ_BMP = \
+	$(BUILD_DIR)/image.o
+$(OBJ_BMP) : $(RESOURCE_DIR)/images/image.bmp
+	$(OBJCOPY) -I binary -O elf32-littlearm -B arm $(RESOURCE_DIR)/images/image.bmp $(BUILD_DIR)/image.o
+
 
 OBJ_FONT = \
 	$(BUILD_DIR)/$(FONT_NAME).S.o \
